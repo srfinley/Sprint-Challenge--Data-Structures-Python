@@ -37,22 +37,22 @@ duplicates = []  # Return the list of duplicates in this data structure
 # STRETCH FROM README: only storing the names in lists
 # Sort the first list and do binary search of it?
 
-sort_names = sorted(names_1)
+# sort_names = sorted(names_1)
 
-def find_name(name, floor, ceil):
-    mid = (ceil + floor) // 2
-    if sort_names[mid] == name:
-        return True
-    if mid == floor:
-        return False
-    elif name < sort_names[mid]:
-        return find_name(name, floor, mid)
-    else:
-        return find_name(name, mid, ceil)
+# def find_name(name, floor, ceil):
+#     mid = (ceil + floor) // 2
+#     if sort_names[mid] == name:
+#         return True
+#     if mid == floor:
+#         return False
+#     elif name < sort_names[mid]:
+#         return find_name(name, floor, mid)
+#     else:
+#         return find_name(name, mid, ceil)
 
-for name in names_2:
-    if find_name(name, 0, len(sort_names)):
-        duplicates.append(name)
+# for name in names_2:
+#     if find_name(name, 0, len(sort_names)):
+#         duplicates.append(name)
 
 # runtime on my computer: 0.08 seconds
 # since the sorted list is effectively a balanced binary search tree,
@@ -63,6 +63,17 @@ for name in names_2:
 # involve building the names_1 list from the file in a sorted way
 # or a manually implemented in-place SA
 
+# STRETCH 2.0: MINIMIZE RUNTIME WITHOUT IMPORTS
+# try converting list to dict for constant lookup time?
+
+di = {name: None for name in names_1}
+
+for name in names_2:
+    if name in di:
+        duplicates.append(name)
+
+# runtime: 0.009 seconds
+# O(n) solution!! (technically O(n+m))
 
 end_time = time.time()
 print (f"{len(duplicates)} duplicates:\n\n{', '.join(duplicates)}\n\n")
