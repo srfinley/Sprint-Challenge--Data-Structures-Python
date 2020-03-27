@@ -21,17 +21,48 @@ duplicates = []  # Return the list of duplicates in this data structure
 #         if name_1 == name_2:
 #             duplicates.append(name_1)
 
-t = BinarySearchTree(names_1[0])
-for name in names_1:
-    t.insert(name)
-# insertion of n elements is O(nlogn)
+# FIRST PASS SOLUTION
+# t = BinarySearchTree(names_1[0])
+# for name in names_1:
+#     t.insert(name)
+# # insertion of n elements is O(nlogn)
 
-for name in names_2:
-    if t.contains(name):
-        duplicates.append(name)
-# assuming names_1 isn't in a hostile order, searching is O(logn) (technically theta)
+# for name in names_2:
+#     if t.contains(name):
+#         duplicates.append(name)
+# assuming names_1 isn't in a hostile order, searching is O(logn) (so technically theta)
 
 # runtime improvement on my computer: 9.1 seconds to 0.20 seconds
+
+# STRETCH FROM README: only storing the names in lists
+# Sort the first list and do binary search of it?
+
+sort_names = sorted(names_1)
+
+def find_name(name, floor, ceil):
+    mid = (ceil + floor) // 2
+    if sort_names[mid] == name:
+        return True
+    if mid == floor:
+        return False
+    elif name < sort_names[mid]:
+        return find_name(name, floor, mid)
+    else:
+        return find_name(name, mid, ceil)
+
+for name in names_2:
+    if find_name(name, 0, len(sort_names)):
+        duplicates.append(name)
+
+# runtime on my computer: 0.08 seconds
+# since the sorted list is effectively a balanced binary search tree,
+# lookup time is definitely O(logn)
+# timsort (Python's built-in SA) is O(nlogn)
+
+# the solution more in line with the spirit of the problem would probably
+# involve building the names_1 list from the file in a sorted way
+# or a manually implemented in-place SA
+
 
 end_time = time.time()
 print (f"{len(duplicates)} duplicates:\n\n{', '.join(duplicates)}\n\n")
