@@ -15,6 +15,9 @@ class Node:
         # set this node's next_node reference to the passed in node
         self.next_node = new_next
 
+    def __str__(self):
+        return f'Node = {self.value}. next is {self.next_node}'
+
 
 class LinkedList:
     def __init__(self):
@@ -47,4 +50,23 @@ class LinkedList:
 
     def reverse_list(self, node, prev):
         # You must use recursion for this solution
-        pass
+        if self.head == None:
+            return
+        next = node.next_node
+        node.next_node = prev
+        if next == None:
+            self.head = node
+            return
+        self.reverse_list(next, node)
+
+l = LinkedList()
+l.add_to_head(1)
+l.add_to_head(2)
+l.add_to_head(3)
+l.add_to_head(4)
+l.add_to_head(5)
+l.reverse_list(l.head, None)
+current = l.head
+while current is not None:
+    print(current.value)
+    current = current.next_node
